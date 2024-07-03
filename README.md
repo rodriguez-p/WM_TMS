@@ -1,2 +1,4 @@
-# tms_behav_analysis
- Repository with the Python scripts to run the behavioral analyses and generate plots for the TMS experiment.
+# 
+The role of white matter variability in TMS neuromodulatory effects
+
+ Contains scripts to run the behavioural analyses and generate the plots described in the paper "The role of white matter variability in TMS neuromodulatory effects".
