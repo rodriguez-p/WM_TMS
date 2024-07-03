@@ -1,7 +1,6 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
-import janitor
 import os
 import seaborn as sns
 import numpy as np
@@ -36,27 +35,29 @@ df = df[df["TargetPresence"] == "Present"]
 mean_by_region = df.groupby(['Region', 'Task', 'Subject'])['Target.RT'].mean().reset_index()
 print(mean_by_region)
 
-fig, axes = plt.subplots()
+fig, axes = plt.subplots(figsize = (6, 8))
 
 sns.set(style = 'ticks', font_scale = 2, rc={"lines.linewidth": 0.7})
 
 ax = sns.boxplot(data = mean_by_region, x = 'Region', y = 'Target.RT', dodge=.8 - .8 / 3, whis = 0, showfliers = False)
+sns.pointplot(data = mean_by_region, x = 'Region', y = 'Target.RT', estimator = np.median, 
+              color = 'black', linestyles = '--')
 sns.stripplot(data = mean_by_region, x = 'Region', y ='Target.RT', 
               edgecolor = 'black', linewidth = 1, alpha = 0.4)
-sns.pointplot(data = mean_by_region, x = 'Region', y = 'Target.RT', estimator = np.meann, 
-              color = 'black', linestyles = '--')
 # annotator just used for visualization
 pairs=[("FEF", "Vertex")]
-annotator = Annotator(ax, pairs = pairs, data=mean_by_region, x=dx, y=dy)
+annotator = Annotator(ax, pairs = pairs, data=mean_by_region, x='Region', y='Target.RT')
 annotator.set_custom_annotations(["*"]) # update acording to test results
 annotator.configure(text_format='star', loc='outside')
 annotator.annotate()
-ax.set_ylabel('Reaction times (ms)')
+ax.set_ylabel('Reaction times (ms)', fontweight = 'bold')
+ax.set_xlabel('')
 sns.despine(trim=True)
 plt.tight_layout()
 plt.savefig('RT_Region.png')
 plt.close()
 
+#%%
 ## TASK * REGION PLOT
 mean_by_region = df.groupby(['Region', 'Task', 'Subject'])['Target.RT'].mean().reset_index()
 mean_alerting = mean_by_region[mean_by_region['Task'] == 'Alerting']
@@ -73,7 +74,7 @@ sns.set(style = 'ticks', font_scale = 2, rc={"lines.linewidth": 0.7})
 sns.boxplot(data=mean_alerting, x='Region', y='Target.RT', dodge=.8 - .8 / 3, ax=axes[0], whis = 0, showfliers = False)
 stripplot1 = sns.stripplot(data=mean_alerting, x='Region', y='Target.RT', 
               ax=axes[0], edgecolor = 'black', linewidth = 1, alpha = 0.4)
-sns.pointplot(data = mean_alerting, x = 'Region', y = 'Target.RT', estimator = np.meann, 
+sns.pointplot(data = mean_alerting, x = 'Region', y = 'Target.RT', estimator = np.median, 
               color = 'black', linestyles = '--', ax = axes[0])
 sns.despine(trim=True)
 
@@ -89,7 +90,7 @@ axes[0].set_ylabel('Reaction times (ms)')
 sns.boxplot(data=mean_orienting, x='Region', y='Target.RT', ax=axes[1], dodge=.8 - .8 / 3, whis = 0, showfliers = False)
 stripplot2 = sns.stripplot(data=mean_orienting, x='Region', y='Target.RT', 
               ax=axes[1], edgecolor = 'black', linewidth = 1, alpha = 0.4)
-sns.pointplot(data = mean_orienting, x = 'Region', y = 'Target.RT', estimator = np.meann, 
+sns.pointplot(data = mean_orienting, x = 'Region', y = 'Target.RT', estimator = np.median, 
               color = 'black', linestyles = '--', ax = axes[1])
 sns.despine(trim=True)
 
@@ -124,7 +125,7 @@ sns.set(style = 'ticks', rc={"lines.linewidth": 0.7})
 sns.boxplot(data=mean_fef, x = dx, y = dy, dodge=.8 - .8 / 3, ax=axes[0], whis = 0, showfliers = False, palette = 'Set3')
 stripplot1 = sns.stripplot(data=mean_fef, x = dx, y = dy, dodge=False, 
               ax=axes[0], edgecolor = 'black', linewidth = 1, alpha = 0.4, palette = 'Set3')
-sns.pointplot(data = mean_fef, x = dx, y = dy, estimator = np.meann, 
+sns.pointplot(data = mean_fef, x = dx, y = dy, estimator = np.median, 
               color = 'black', linestyles = '--', ax = axes[0])
 sns.despine(trim=True)
 
@@ -141,7 +142,7 @@ axes[0].set_ylabel('Target.RT')
 sns.boxplot(data=mean_vertex, x = dx, y = dy, ax=axes[1], dodge=.8 - .8 / 3, whis = 0, showfliers = False, palette = 'Set3')
 stripplot2 = sns.stripplot(data=mean_vertex, x = dx, y = dy, dodge=False, 
               ax=axes[1], edgecolor = 'black', linewidth = 1, alpha = 0.4, palette = 'Set3')
-sns.pointplot(data = mean_vertex, x = dx, y = dy, estimator = np.meann, 
+sns.pointplot(data = mean_vertex, x = dx, y = dy, estimator = np.median, 
               color = 'black', linestyles = '--', ax = axes[1])
 sns.despine(trim=True)
 
@@ -174,7 +175,7 @@ sns.set(style = 'ticks', font_scale = 2, rc={"lines.linewidth": 0.7})
 sns.boxplot(data=mean_fef, x = 'Attention', y = 'Target.RT', dodge=.8 - .8 / 3, ax=axes[0], whis = 0, showfliers = False, palette = 'Set3')
 stripplot1 = sns.stripplot(data=mean_fef, x = 'Attention', y = 'Target.RT', 
               ax=axes[0], edgecolor = 'black', linewidth = 1, alpha = 0.4, palette = 'Set3')
-sns.pointplot(data = mean_fef, x = 'Attention', y = 'Target.RT', estimator = np.meann, 
+sns.pointplot(data = mean_fef, x = 'Attention', y = 'Target.RT', estimator = np.median, 
               color = 'black', linestyles = '--', ax = axes[0])
 sns.despine(trim=True)
 
@@ -190,7 +191,7 @@ axes[0].set_ylabel('Reaction times (ms)')
 sns.boxplot(data=mean_vertex, x = dx, y = dy, ax=axes[1], dodge=.8 - .8 / 3, whis = 0, showfliers = False, palette = 'Set3')
 stripplot2 = sns.stripplot(data=mean_vertex, x = dx, y = dy, 
               ax=axes[1], edgecolor = 'black', linewidth = 1, alpha = 0.4, palette = 'Set3')
-sns.pointplot(data = mean_vertex, x = dx, y = dy, estimator = np.meann, 
+sns.pointplot(data = mean_vertex, x = dx, y = dy, estimator = np.median, 
               color = 'black', linestyles = '--', ax = axes[1])
 sns.despine(trim=True)
 
@@ -215,9 +216,6 @@ mean_alerting = mean_by_region[mean_by_region['Task'] == 'Alerting']
 mean_orienting = mean_by_region[mean_by_region['Task'] == 'Orienting']
 print(mean_by_region)
 
-mean_alerting = mean_by_region[mean_by_region['Task'] == 'Alerting']
-mean_orienting = mean_by_region[mean_by_region['Task'] == 'Orienting']
-
 fig, axes = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
 
 sns.set(style = 'ticks',  font_scale = 2, rc={"lines.linewidth": 0.7})
@@ -225,7 +223,7 @@ sns.set(style = 'ticks',  font_scale = 2, rc={"lines.linewidth": 0.7})
 sns.boxplot(data=mean_alerting, x='Region', y='Target.RT', dodge=.8 - .8 / 3, ax=axes[0], whis = 0, showfliers = False)
 stripplot1 = sns.stripplot(data=mean_alerting, x='Region', y='Target.RT', 
               ax=axes[0], edgecolor = 'black', linewidth = 1, alpha = 0.4)
-sns.pointplot(data = mean_alerting, x = 'Region', y = 'Target.RT', estimator = np.meann, 
+sns.pointplot(data = mean_alerting, x = 'Region', y = 'Target.RT', estimator = np.median, 
               color = 'black', linestyles = '--', ax = axes[0])
 sns.despine(trim=True)
 
@@ -241,7 +239,7 @@ axes[0].set_ylabel('Reaction times (ms)')
 sns.boxplot(data=mean_orienting, x='Region', y='Target.RT', ax=axes[1], dodge=.8 - .8 / 3, whis = 0, showfliers = False)
 stripplot2 = sns.stripplot(data=mean_orienting, x='Region', y='Target.RT',
               ax=axes[1], edgecolor = 'black', linewidth = 1, alpha = 0.4)
-sns.pointplot(data = mean_orienting, x = 'Region', y = 'Target.RT', estimator = np.meann, 
+sns.pointplot(data = mean_orienting, x = 'Region', y = 'Target.RT', estimator = np.median, 
               color = 'black', linestyles = '--', ax = axes[1])
 # sns.lineplot(x='Region', y='Target.RT', data=mean_orienting, hue='Subject', marker='o',
 #                   palette=['gray'] * len(df['Subject'].unique()),

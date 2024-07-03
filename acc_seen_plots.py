@@ -1,7 +1,6 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
-import janitor
 import os
 import seaborn as sns
 import numpy as np
@@ -11,6 +10,7 @@ from statannotations.Annotator import Annotator
 pd.options.display.float_format = '{:,.3f}'.format
 pd.set_option("display.precision", 3)
 
+raw_data = pd.read_csv('raw_data_all.csv', sep = ';')
 # create a df selecting the necessary columns from the raw data
 df = raw_data[['Subject', 'Awareness', 'Attention', 'Region', 'Task', 'Target.ACC', 'TargetPresence']].copy()
 
@@ -34,7 +34,7 @@ mean_by_region = df_acc.groupby(['Region', 'Task', 'Subject'])['Target.ACC'].mea
 dx = 'Region'
 dy = 'Target.ACC'
 
-fig, axes = plt.subplots()
+fig, axes = plt.subplots(figsize = (6, 8))
 
 sns.set(style = 'ticks', font_scale = 2, rc={"lines.linewidth": 0.7})
 
@@ -48,7 +48,8 @@ annotator = Annotator(ax, pairs = pairs, data=mean_by_region, x=dx, y=dy)
 annotator.set_custom_annotations(["*"]) 
 annotator.configure(text_format='star', loc='outside')
 annotator.annotate()
-ax.set_ylabel('Accuracy')
+ax.set_ylabel('Accuracy', fontweight = 'bold')
+ax.set_xlabel('')
 sns.despine(trim=True)
 plt.tight_layout()
 plt.savefig('ACC_Region.png')
@@ -63,7 +64,7 @@ mean_by_region = df_seen.groupby(['Region', 'Task', 'Attention', 'Subject'])['Se
 dx = 'Region'
 dy = 'Seen'
 
-fig, axes = plt.subplots()
+fig, axes = plt.subplots(figsize = (6, 8))
 
 sns.set(style = 'ticks', font_scale = 2, rc={"lines.linewidth": 0.7})
 
@@ -77,7 +78,8 @@ annotator = Annotator(ax, pairs = pairs, data=mean_by_region, x=dx, y=dy)
 annotator.set_custom_annotations(["*"])
 annotator.configure(text_format='star', loc='outside')
 annotator.annotate()
-ax.set_ylabel('Proportion Seen')
+ax.set_ylabel('Proportion Seen', fontweight = 'bold')
+ax.set_xlabel('')
 sns.despine(trim=True)
 plt.tight_layout()
 plt.savefig('Seen_Region.png')
