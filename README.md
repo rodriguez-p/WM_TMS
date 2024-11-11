@@ -1,6 +1,6 @@
 # The role of white matter variability in TMS neuromodulatory effects
 
- Contains scripts and data to run the behavioural analyses and generate the plots described in the paper "The role of white matter variability in TMS neuromodulatory effects".
+ Contains scripts and data to run the behavioural analyses and generate the plots described in the paper "The role of white matter variability in TMS neuromodulatory effects" (https://doi.org/10.1016/j.brs.2024.11.006).
 
 The following files can be found here: 
 
